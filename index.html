@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>各种搜索引擎的智能提示API</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.wrap{
+				margin: 100px auto;
+				width: 600px;
+				height: 50px;
+			}
+			#inputword{
+				width: 500px;
+				height: 100%;
+				display: block;
+				float: left;
+			}
+			#search{
+				width: 90px;
+				height: 100%;
+				display: block;
+			}
+			.show{
+			}
+		</style>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	</head>
+	<body>
+		<div class="wrap">
+			<input type="text" id="inputword" />
+			<input type="submit" name="search" id="search" value=" 搜索" />
+			
+		</div>
+		<p class="show">
+		</p>
+		
+		<script type="text/javascript">
+//		http://suggestion.baidu.com/su?wd=#content#&cb=window.baidu.sug
+			$(function(){
+//				var url ="http://suggestion.baidu.com/su?wd=#content#&cb=window.baidu.sug";
+				
+				$("#inputword").keyup(function(){
+					var content=$("#inputword").val();
+					$.ajax({
+						type:"GET",
+						url:"http://suggestion.baidu.com/su?wd="+content,
+						dataType:"jsonp",
+						jsonp:"cb",
+						success:function(data){
+							var json =data.s;
+							var html ="";
+							for (var i = 0; i < json.length; i++) {
+								html+="<li>"+json[i]+"<li>";
+							}
+							$(".show").html(html);
+						}
+					});
+				})
+			})
+		</script>
+	</body>
+</html>
